@@ -21,7 +21,7 @@ public class ControllerProposta {
 
     @PostMapping("/v1/proposta")
     public ResponseEntity<?> create(@RequestBody @Valid RequestProposta requestProposta, UriComponentsBuilder uriBuilder){
-        Proposta proposta = requestProposta.converToProposta();
+        Proposta proposta = requestProposta.convertToProposta();
         repositoryProposta.save(proposta);
         URI uri = uriBuilder.path("/v1/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
         return ResponseEntity.created(uri).build();
