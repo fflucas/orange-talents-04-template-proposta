@@ -1,5 +1,7 @@
 package br.com.zupacademy.fabio.proposta;
 
+import br.com.zupacademy.fabio.proposta.shared.validator.IsUnique;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -7,7 +9,7 @@ import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public class RequestProposta {
-    @NotBlank @CpfOrCnpjValidator
+    @NotBlank @CpfOrCnpjValidator @IsUnique(domainClass = Proposta.class, fieldName = "document")
     private String document;
     @NotBlank @Email
     private String email;
@@ -46,7 +48,7 @@ public class RequestProposta {
         this.salary = salary;
     }
 
-    public Proposta converToProposta(){
+    public Proposta convertToProposta(){
         return new Proposta(document, email, name, address, salary);
     }
 }
