@@ -1,4 +1,4 @@
-package br.com.zupacademy.fabio.proposta;
+package br.com.zupacademy.fabio.proposta.client;
 
 import org.hibernate.validator.constraints.CompositionType;
 import org.hibernate.validator.constraints.ConstraintComposition;
