@@ -1,10 +1,9 @@
-package br.com.zupacademy.fabio.proposta;
+package br.com.zupacademy.fabio.proposta.client;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
+
+enum PropostaStatus{NAO_ELEGIVEL, ELEGIVEL};
 
 @Entity
 public class Proposta {
@@ -17,6 +16,8 @@ public class Proposta {
     private String name;
     private String address;
     private BigDecimal salary;
+    @Enumerated(EnumType.STRING)
+    private PropostaStatus status;
 
     public Proposta() {
     }
@@ -51,5 +52,13 @@ public class Proposta {
 
     public BigDecimal getSalary() {
         return salary;
+    }
+
+    public PropostaStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PropostaStatus status) {
+        this.status = status;
     }
 }

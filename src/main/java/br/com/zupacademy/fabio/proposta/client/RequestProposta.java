@@ -1,4 +1,4 @@
-package br.com.zupacademy.fabio.proposta;
+package br.com.zupacademy.fabio.proposta.client;
 
 import br.com.zupacademy.fabio.proposta.shared.validator.IsUnique;
 
