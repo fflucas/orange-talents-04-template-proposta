@@ -18,6 +18,7 @@ public class Proposta {
     private BigDecimal salary;
     @Enumerated(EnumType.STRING)
     private PropostaStatus status;
+    private String cardNumber;
 
     public Proposta() {
     }
@@ -60,5 +61,13 @@ public class Proposta {
 
     public void setStatus(PropostaStatus status) {
         this.status = status;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 }
