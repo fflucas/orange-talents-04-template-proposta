@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Component
 public class TransactionExecutor {
@@ -29,7 +30,18 @@ public class TransactionExecutor {
     }
 
     @Transactional
+    public List<Long> findPropostaElegivelSemNumeroCartao(){
+        return manager.createQuery("SELECT id FROM Proposta WHERE cardNumber IS NULL AND status = 'ELEGIVEL'")
+                .getResultList();
+    }
+
+    @Transactional
     public <T> T mergeAndCommit(T object) {
         return manager.merge(object);
+    }
+
+    @Transactional
+    public <T> void delete(T object){
+        manager.remove(object);
     }
 }
