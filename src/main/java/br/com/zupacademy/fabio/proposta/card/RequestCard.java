@@ -1,4 +1,4 @@
-package br.com.zupacademy.fabio.proposta.client.card;
+package br.com.zupacademy.fabio.proposta.card;
 
 import feign.FeignException;
 import org.springframework.cloud.openfeign.FeignClient;

@@ -1,4 +1,4 @@
-package br.com.zupacademy.fabio.proposta.client.card;
+package br.com.zupacademy.fabio.proposta.card;
 
 public class RequestApi {
     private String documento;
