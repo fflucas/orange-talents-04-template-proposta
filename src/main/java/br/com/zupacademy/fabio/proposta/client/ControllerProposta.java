@@ -54,6 +54,8 @@ public class ControllerProposta {
                 transactionExecutor.delete(proposta);
                 throw new ApiErrorException(HttpStatus.INTERNAL_SERVER_ERROR, fe.getLocalizedMessage());
             }
+        }catch (Exception e){
+            transactionExecutor.delete(proposta);
         }
         transactionExecutor.mergeAndCommit(proposta);
 

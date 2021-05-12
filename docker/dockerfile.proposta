@@ -1,0 +1,15 @@
+FROM maven:3.8-jdk-11 AS build
+COPY src /usr/src/app/src
+COPY pom.xml /usr/src/app
+ARG DATABASE_HOST
+ARG ANALISE_HOST
+ARG CONTAS_HOST
+RUN mvn -f /usr/src/app/pom.xml clean package
+
+FROM openjdk:11
+COPY --from=build /usr/src/app/target/proposta /usr/app/proposta
+ENV DATABASE_HOST=$DATABASE_HOST
+ENV ANALISE_HOST=$ANALISE_HOST
+ENV CONTAS_HOST=$CONTAS_HOST
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","/usr/app/proposta.jar"]

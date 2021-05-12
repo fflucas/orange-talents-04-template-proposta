@@ -134,7 +134,35 @@ services:
       VAULT_TOKEN: ee413645-dbe8-4848-afc6-6bb2768ada75
       VAULT_ADDR: http://127.0.0.1:8200
 
+  mysql:
+    image: 'mysql:5.7'
+    volumes:
+    - mysql-volume:/var/lib/mysql
+    container_name: mysql
+    ports:
+      - 3309:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: proposta
+#
+#  proposta:
+#    build:
+#      dockerfile: ./docker/dockerfile.proposta
+#      context: .
+#      args:
+#        - DATABASE_HOST=jdbc:mysql://mysql:3306/proposta?createDatabaseIfNotExist=true
+#        - ANALISE_HOST=analise
+#        - CONTAS_HOST=contas
+#    image: proposta
+#    container_name: proposta
+#    restart: on-failure
+#    ports:
+#      - 8080:8080
+#    depends_on:
+#      - mysql
+#      - keycloak
 volumes:
   grafana-volume:
   prometheus-volume:
   postgres-volume:
+  mysql-volume:
