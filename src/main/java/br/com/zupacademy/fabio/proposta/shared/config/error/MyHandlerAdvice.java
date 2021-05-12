@@ -30,6 +30,16 @@ public class MyHandlerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ResponseError> handle(IllegalArgumentException illegalArgumentException) {
+        Collection<String> messages = new ArrayList<>();
+        String message = illegalArgumentException.getLocalizedMessage();
+        message = String.format("Error on: %s", message);
+        messages.add(message);
+        ResponseError responseError = new ResponseError(messages);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
+    }
+
     @ExceptionHandler(ApiErrorException.class)
     public ResponseEntity<ResponseError> handleApiErrorException(ApiErrorException apiErrorException) {
         Collection<String> messages = new ArrayList<>();

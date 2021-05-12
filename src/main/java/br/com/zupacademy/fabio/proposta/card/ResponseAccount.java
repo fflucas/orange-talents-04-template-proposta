@@ -1,4 +1,4 @@
-package br.com.zupacademy.fabio.proposta.client.card;
+package br.com.zupacademy.fabio.proposta.card;
 
 import org.springframework.util.Assert;
 

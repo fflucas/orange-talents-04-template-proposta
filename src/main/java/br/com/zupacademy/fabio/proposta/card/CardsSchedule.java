@@ -1,4 +1,4 @@
-package br.com.zupacademy.fabio.proposta.client.card;
+package br.com.zupacademy.fabio.proposta.card;
 
 import br.com.zupacademy.fabio.proposta.client.Proposta;
 import br.com.zupacademy.fabio.proposta.shared.TransactionExecutor;
@@ -36,9 +36,9 @@ public class CardsSchedule {
                 ResponseAccount responseAccount = requestAccount.requestAccount(id_proposta.toString());
                 Card card = transactionExecutor.commitAndSave(responseAccount.convertToCard());
                 Proposta proposta = transactionExecutor.find(Proposta.class, id_proposta);
-                proposta.setCardNumber(card.getId());
+                proposta.setCardNumber(card.getNumber());
                 transactionExecutor.mergeAndCommit(proposta);
-                logger.info("Proposta {} received card number {}", proposta.getId(), proposta.getCardNumber());
+                logger.info("Proposta {} received card {}", proposta.getId(), proposta.getCardNumber());
             }catch (FeignException fe){
                 logger.info("Proposta {} has not yet received the card number", id_proposta);
                 System.out.println(fe.getLocalizedMessage());

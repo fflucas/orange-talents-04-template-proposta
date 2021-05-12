@@ -1,7 +1,7 @@
 package br.com.zupacademy.fabio.proposta.client;
 
-import br.com.zupacademy.fabio.proposta.client.card.RequestApi;
-import br.com.zupacademy.fabio.proposta.client.card.RequestCard;
+import br.com.zupacademy.fabio.proposta.card.RequestApi;
+import br.com.zupacademy.fabio.proposta.card.RequestCard;
 import br.com.zupacademy.fabio.proposta.shared.TransactionExecutor;
 import br.com.zupacademy.fabio.proposta.shared.config.error.ApiErrorException;
 import feign.FeignException;
@@ -35,7 +35,6 @@ public class ControllerProposta {
     }
 
     @PostMapping("/")
-    @Transactional
     public ResponseEntity<?> create(@RequestBody @Valid RequestProposta requestProposta, UriComponentsBuilder uriBuilder){
         Proposta proposta = requestProposta.convertToProposta();
         transactionExecutor.commitAndSave(proposta);
