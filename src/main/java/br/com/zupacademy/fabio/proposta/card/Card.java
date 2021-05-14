@@ -17,7 +17,7 @@ public class Card {
     private List<Biometry> biometries = new ArrayList<>();
     @OneToMany(mappedBy = "card")
     private List<LockCard> lockCards = new ArrayList<>();
-
+    private boolean locked;
 
     @Deprecated
     public Card() {
@@ -25,6 +25,7 @@ public class Card {
 
     public Card(String number) {
         this.number = number;
+        this.locked = false;
     }
 
     public void setBiometry(Biometry biometry) {
@@ -49,5 +50,13 @@ public class Card {
 
     public List<LockCard> getLocks() {
         return lockCards;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public boolean isLocked() {
+        return locked;
     }
 }

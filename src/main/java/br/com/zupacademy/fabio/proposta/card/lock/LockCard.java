@@ -44,15 +44,4 @@ public class LockCard {
     public String getUserAgent() {
         return userAgent;
     }
-
-    @Override
-    public String toString() {
-        return "Lock{" +
-                "id=" + id +
-                ", createdAt=" + createdAt +
-                ", clientIp='" + clientIp + '\'' +
-                ", userAgent='" + userAgent + '\'' +
-                ", card=" + card +
-                '}';
-    }
 }

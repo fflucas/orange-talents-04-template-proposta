@@ -2,6 +2,7 @@ package br.com.zupacademy.fabio.proposta.card;
 
 import feign.FeignException;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,7 +16,7 @@ public interface CardApi {
     ResponseCard detailCard(@PathVariable("id") String id);
 
     @RequestMapping(method = RequestMethod.POST, value = "${cards.request}/{id}/bloqueios")
-    ResponseToLockCard lockCard(@PathVariable("id") String id, RequestLockCard card);
+    ResponseEntity lockCard(@PathVariable("id") String id, RequestLockCard card);
 
     class RequestLockCard{
         static String sistemaResponsavel = "minha-aplicacao";

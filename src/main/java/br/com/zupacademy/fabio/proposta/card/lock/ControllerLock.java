@@ -3,7 +3,6 @@ package br.com.zupacademy.fabio.proposta.card.lock;
 import br.com.zupacademy.fabio.proposta.card.Card;
 import br.com.zupacademy.fabio.proposta.card.CardApi;
 import br.com.zupacademy.fabio.proposta.card.ResponseCard;
-import br.com.zupacademy.fabio.proposta.card.ResponseToLockCard;
 import br.com.zupacademy.fabio.proposta.shared.TransactionExecutor;
 import br.com.zupacademy.fabio.proposta.shared.config.error.ApiErrorException;
 import feign.FeignException;
@@ -18,9 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
+import java.net.URI;
 import java.net.UnknownHostException;
 
 @RestController
@@ -39,7 +40,8 @@ public class ControllerLock {
     public ResponseEntity<Object> lockCard(
             @RequestHeader(value = HttpHeaders.USER_AGENT) String userAgent,
             @PathVariable Long id_card,
-            HttpServletRequest servletRequest
+            HttpServletRequest servletRequest,
+            UriComponentsBuilder builder
     ){
         Card card = transactionExecutor.find(Card.class, id_card);
         if(card == null){
@@ -71,13 +73,16 @@ public class ControllerLock {
 
         // solicita bloqueio na api externa
         try {
-            ResponseToLockCard responseToLockCard = cardApi.lockCard(card.getNumber(), new CardApi.RequestLockCard());
-            if (responseToLockCard.isSuccess()){
+            ResponseEntity<?> responseToLockCard = cardApi.lockCard(card.getNumber(), new CardApi.RequestLockCard());
+            if (responseToLockCard.getStatusCode().equals(HttpStatus.OK)){
                 LockCard lockCard = new LockCard(userIp, userAgent, card);
                 transactionExecutor.commitAndSave(lockCard);
                 card.setLock(lockCard);
+                card.setLocked(true);
                 transactionExecutor.mergeAndCommit(card);
                 logger.info("Card {} was successfully locked", card.getId());
+                URI uri = builder.path("/v1/locks/{id}").buildAndExpand(lockCard.getId()).toUri();
+                return ResponseEntity.created(uri).build();
             }
         }catch (FeignException fe){
             throw new ApiErrorException(
@@ -85,8 +90,7 @@ public class ControllerLock {
                     "O servidor de cartões não conseguiu bloquear o cartão"
             );
         }
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.badRequest().build();
     }
 
     private String getUserIpAddress(HttpServletRequest servletRequest){
