@@ -1,5 +1,7 @@
 package br.com.zupacademy.fabio.proposta.client;
 
+import br.com.zupacademy.fabio.proposta.card.Card;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -18,7 +20,8 @@ public class Proposta {
     private BigDecimal salary;
     @Enumerated(EnumType.STRING)
     private PropostaStatus status;
-    private String cardNumber;
+    @OneToOne
+    private Card card;
 
     public Proposta() {
     }
@@ -63,11 +66,11 @@ public class Proposta {
         this.status = status;
     }
 
-    public String getCardNumber() {
-        return cardNumber;
+    public Card getCard() {
+        return card;
     }
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public void setCard(Card card) {
+        this.card = card;
     }
 }

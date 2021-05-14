@@ -1,7 +1,7 @@
 package br.com.zupacademy.fabio.proposta.client;
 
 import br.com.zupacademy.fabio.proposta.card.RequestApi;
-import br.com.zupacademy.fabio.proposta.card.RequestCard;
+import br.com.zupacademy.fabio.proposta.card.AnaliseApi;
 import br.com.zupacademy.fabio.proposta.shared.TransactionExecutor;
 import br.com.zupacademy.fabio.proposta.shared.config.error.ApiErrorException;
 import feign.FeignException;
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Optional;
@@ -24,14 +23,14 @@ public class ControllerProposta {
 
     private TransactionExecutor transactionExecutor;
     private RepositoryProposta repositoryProposta;
-    private RequestCard requestCard;
+    private AnaliseApi analiseApi;
     private final Logger logger = LoggerFactory.getLogger(ControllerProposta.class);
 
     @Autowired
-    public ControllerProposta(TransactionExecutor transactionExecutor, RepositoryProposta repositoryProposta, RequestCard requestCard) {
+    public ControllerProposta(TransactionExecutor transactionExecutor, RepositoryProposta repositoryProposta, AnaliseApi analiseApi) {
         this.transactionExecutor = transactionExecutor;
         this.repositoryProposta = repositoryProposta;
-        this.requestCard = requestCard;
+        this.analiseApi = analiseApi;
     }
 
     @PostMapping("/")
@@ -45,7 +44,7 @@ public class ControllerProposta {
                 proposta.getId().toString()
         );
         try{
-            ResponseEntity<Object> objectResponseEntity = requestCard.requestAnalysisForCard(requestApi);
+            ResponseEntity<Object> objectResponseEntity = analiseApi.requestAnalysisForCard(requestApi);
             proposta.setStatus(
                     (objectResponseEntity.getStatusCode() == HttpStatus.CREATED) ? PropostaStatus.ELEGIVEL : PropostaStatus.NAO_ELEGIVEL
             );
