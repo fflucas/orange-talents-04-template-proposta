@@ -1,6 +1,7 @@
 package br.com.zupacademy.fabio.proposta.card;
 
 import br.com.zupacademy.fabio.proposta.biometry.Biometry;
+import br.com.zupacademy.fabio.proposta.card.lock.LockCard;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +15,9 @@ public class Card {
     private String number;
     @OneToMany(mappedBy = "card")
     private List<Biometry> biometries = new ArrayList<>();
+    @OneToMany(mappedBy = "card")
+    private List<LockCard> lockCards = new ArrayList<>();
+
 
     @Deprecated
     public Card() {
@@ -37,5 +41,13 @@ public class Card {
 
     public String getNumber() {
         return number;
+    }
+
+    public void setLock(LockCard lockCard) {
+        this.lockCards.add(lockCard);
+    }
+
+    public List<LockCard> getLocks() {
+        return lockCards;
     }
 }

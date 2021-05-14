@@ -14,13 +14,13 @@ import java.util.List;
 @Component
 public class CardsSchedule {
 
-    private RequestAccount requestAccount;
+    private CardApi cardApi;
     private TransactionExecutor transactionExecutor;
     private final Logger logger = LoggerFactory.getLogger(CardsSchedule.class);
 
     @Autowired
-    public CardsSchedule(RequestAccount requestAccount, TransactionExecutor transactionExecutor) {
-        this.requestAccount = requestAccount;
+    public CardsSchedule(CardApi cardApi, TransactionExecutor transactionExecutor) {
+        this.cardApi = cardApi;
         this.transactionExecutor = transactionExecutor;
     }
 
@@ -33,12 +33,12 @@ public class CardsSchedule {
 
         for( Long id_proposta : id_propostas){
             try{
-                ResponseAccount responseAccount = requestAccount.requestAccount(id_proposta.toString());
-                Card card = transactionExecutor.commitAndSave(responseAccount.convertToCard());
+                ResponseToRequestCard responseToRequestCard = cardApi.requestCard(id_proposta.toString());
+                Card card = transactionExecutor.commitAndSave(responseToRequestCard.convertToCard());
                 Proposta proposta = transactionExecutor.find(Proposta.class, id_proposta);
-                proposta.setCardNumber(card.getNumber());
+                proposta.setCard(card);
                 transactionExecutor.mergeAndCommit(proposta);
-                logger.info("Proposta {} received card {}", proposta.getId(), proposta.getCardNumber());
+                logger.info("Proposta {} received card {}", proposta.getId(), card.getId());
             }catch (FeignException fe){
                 logger.info("Proposta {} has not yet received the card number", id_proposta);
                 System.out.println(fe.getLocalizedMessage());

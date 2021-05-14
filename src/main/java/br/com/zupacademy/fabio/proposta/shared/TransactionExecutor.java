@@ -31,7 +31,7 @@ public class TransactionExecutor {
 
     @Transactional
     public List<Long> findPropostaElegivelSemNumeroCartao(){
-        return manager.createQuery("SELECT id FROM Proposta WHERE cardNumber IS NULL AND status = 'ELEGIVEL'")
+        return manager.createQuery("SELECT id FROM Proposta WHERE card IS NULL AND status = 'ELEGIVEL'")
                 .getResultList();
     }
 

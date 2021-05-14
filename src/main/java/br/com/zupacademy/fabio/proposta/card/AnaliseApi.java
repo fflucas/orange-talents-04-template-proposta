@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(name = "cards", url = "${cards.hostname}")
-public interface RequestCard {
-    @RequestMapping(method = RequestMethod.POST, value = "${cards.request}")
+@FeignClient(name = "analise", url = "${analise.hostname}")
+public interface AnaliseApi {
+    @RequestMapping(method = RequestMethod.POST, value = "${analise.request}")
     ResponseEntity<Object> requestAnalysisForCard(RequestApi financialAnalysis) throws FeignException;
 }
