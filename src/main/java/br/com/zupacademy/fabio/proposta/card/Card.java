@@ -3,6 +3,7 @@ package br.com.zupacademy.fabio.proposta.card;
 import br.com.zupacademy.fabio.proposta.biometry.Biometry;
 import br.com.zupacademy.fabio.proposta.card.lock.LockCard;
 import br.com.zupacademy.fabio.proposta.card.travel.TravelNotice;
+import br.com.zupacademy.fabio.proposta.card.wallet.Wallet;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ public class Card {
     private boolean locked;
     @OneToMany(mappedBy = "card")
     private List<TravelNotice> travelList = new ArrayList<>();
+    @OneToMany
+    private List<Wallet> walletList = new ArrayList<>();
 
     @Deprecated
     public Card() {
@@ -51,7 +54,7 @@ public class Card {
         this.lockCards.add(lockCard);
     }
 
-    public List<LockCard> getLocks() {
+    public List<LockCard> getLockCards() {
         return lockCards;
     }
 
@@ -69,5 +72,17 @@ public class Card {
 
     public void setTravelList(TravelNotice travelNotice) {
         this.travelList.add(travelNotice);
+    }
+
+    public void setWalletList(Wallet wallet) {
+        this.walletList.add(wallet);
+    }
+
+    public List<Wallet> getWalletList() {
+        return walletList;
+    }
+
+    public boolean hasWallet(String walletName){
+        return walletList.stream().map(wallet -> wallet.getName().equals(walletName)).findFirst().orElse(false);
     }
 }

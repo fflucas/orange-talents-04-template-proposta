@@ -1,13 +1,12 @@
 package br.com.zupacademy.fabio.proposta.card;
 
+import br.com.zupacademy.fabio.proposta.card.wallet.ResponseAssociateWallet;
 import feign.FeignException;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.Calendar;
 
 @FeignClient(name = "cards", url = "${cards.hostname}")
 public interface CardApi {
@@ -60,6 +59,27 @@ public interface CardApi {
 
         public void setValidoAte(String validoAte) {
             this.validoAte = validoAte;
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "${cards.request}/{id}/carteiras")
+    ResponseAssociateWallet associateWallet(@PathVariable("id") String id, RequestAssociateWallet requestAssociateWallet);
+
+    class RequestAssociateWallet{
+        String email;
+        String carteira;
+
+        public RequestAssociateWallet(String email, String carteira) {
+            this.email = email;
+            this.carteira = carteira;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getCarteira() {
+            return carteira;
         }
     }
 }
