@@ -2,6 +2,7 @@ package br.com.zupacademy.fabio.proposta.card;
 
 import br.com.zupacademy.fabio.proposta.biometry.Biometry;
 import br.com.zupacademy.fabio.proposta.card.lock.LockCard;
+import br.com.zupacademy.fabio.proposta.card.travel.TravelNotice;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public class Card {
     @OneToMany(mappedBy = "card")
     private List<LockCard> lockCards = new ArrayList<>();
     private boolean locked;
+    @OneToMany(mappedBy = "card")
+    private List<TravelNotice> travelList = new ArrayList<>();
 
     @Deprecated
     public Card() {
@@ -58,5 +61,13 @@ public class Card {
 
     public boolean isLocked() {
         return locked;
+    }
+
+    public List<TravelNotice> getTravelList() {
+        return travelList;
+    }
+
+    public void setTravelList(TravelNotice travelNotice) {
+        this.travelList.add(travelNotice);
     }
 }
