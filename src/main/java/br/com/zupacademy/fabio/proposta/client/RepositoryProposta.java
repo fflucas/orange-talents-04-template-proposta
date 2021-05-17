@@ -11,4 +11,6 @@ import java.util.List;
 public interface RepositoryProposta extends JpaRepository<Proposta, Long> {
     @Query("SELECT document, name, id FROM Proposta WHERE cardNumber IS NULL AND status = 'ELEGIVEL'")
     List<RequestApi> findPropostaElegivelSemNumeroCartao();
+
+    Proposta findByCardId(Long id_card);
 }
