@@ -1,9 +1,11 @@
 package br.com.zupacademy.fabio.proposta.card.travel;
 
 import br.com.zupacademy.fabio.proposta.card.Card;
+import br.com.zupacademy.fabio.proposta.card.CardApi;
 import br.com.zupacademy.fabio.proposta.shared.TransactionExecutor;
 import br.com.zupacademy.fabio.proposta.shared.UserIp;
 import br.com.zupacademy.fabio.proposta.shared.config.error.ApiErrorException;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,14 +15,17 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 
 @RestController
 public class ControllerTravel {
 
     private TransactionExecutor transactionExecutor;
+    private CardApi cardApi;
     @Autowired
-    public ControllerTravel(TransactionExecutor transactionExecutor) {
+    public ControllerTravel(TransactionExecutor transactionExecutor, CardApi cardApi) {
         this.transactionExecutor = transactionExecutor;
+        this.cardApi = cardApi;
     }
 
     @PostMapping(value = "/v1/cards/{id_card}/travel")
@@ -45,11 +50,30 @@ public class ControllerTravel {
             );
         }
 
-        // cria e salva o aviso de viagem
-        TravelNotice travelNotice = requestTravelNotice.convertToTravel(userAgent, userIp, card);
-        transactionExecutor.commitAndSave(travelNotice);
-        card.setTravelList(travelNotice);
-        transactionExecutor.mergeAndCommit(card);
+        try{
+            // cria o aviso de viagem e comunica o sistema legado
+            TravelNotice travelNotice = requestTravelNotice.convertToTravel(userAgent, userIp, card);
+            CardApi.RequestApiTravelNotice requestApiTravelNotice = new CardApi.RequestApiTravelNotice(
+                    travelNotice.getDestiny(),
+                    new SimpleDateFormat("yyyy-MM-dd").format(travelNotice.getEnd_in().getTime())
+            );
+            ResponseEntity responseEntity = cardApi.travelNotice(card.getNumber(), requestApiTravelNotice);
+            if(responseEntity.getStatusCode().equals(HttpStatus.OK)){
+                // salva tudo
+                transactionExecutor.commitAndSave(travelNotice);
+                card.setTravelList(travelNotice);
+                transactionExecutor.mergeAndCommit(card);
+            }else {
+                throw new ApiErrorException(HttpStatus.BAD_REQUEST, "Algo saiu errado e não foi possível fazer a requisição");
+            }
+        }catch (FeignException fe){
+            System.out.println(fe.getLocalizedMessage());
+            fe.printStackTrace();
+            throw new ApiErrorException(
+                    HttpStatus.BAD_REQUEST,
+                    "O servidor de cartões não conseguiu realizar o aviso de viagem para o cartão"
+            );
+        }
 
         return ResponseEntity.ok().build();
     }
