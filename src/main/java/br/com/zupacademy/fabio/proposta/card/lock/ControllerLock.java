@@ -4,6 +4,7 @@ import br.com.zupacademy.fabio.proposta.card.Card;
 import br.com.zupacademy.fabio.proposta.card.CardApi;
 import br.com.zupacademy.fabio.proposta.card.ResponseCard;
 import br.com.zupacademy.fabio.proposta.shared.TransactionExecutor;
+import br.com.zupacademy.fabio.proposta.shared.UserIp;
 import br.com.zupacademy.fabio.proposta.shared.config.error.ApiErrorException;
 import feign.FeignException;
 import org.slf4j.Logger;
@@ -20,9 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
 import java.net.URI;
-import java.net.UnknownHostException;
 
 @RestController
 public class ControllerLock {
@@ -63,7 +62,7 @@ public class ControllerLock {
             );
         }
 
-        String userIp = getUserIpAddress(servletRequest);
+        String userIp = UserIp.getIpAddress(servletRequest);
         if(StringUtils.isEmpty(userIp) || StringUtils.isEmpty(userAgent)){
             throw new ApiErrorException(
                     HttpStatus.BAD_REQUEST,
@@ -91,26 +90,5 @@ public class ControllerLock {
             );
         }
         return ResponseEntity.badRequest().build();
-    }
-
-    private String getUserIpAddress(HttpServletRequest servletRequest){
-        final String LOCALHOST_IPV4 = "127.0.0.1";
-        final String LOCALHOST_IPV6 = "0:0:0:0:0:0:0:1";
-
-        // pega o ip do usuário. Se for local pega o ip do host
-        String ipAddress = "";
-        ipAddress = servletRequest.getHeader("X-Forwarded-For");
-        if(StringUtils.isEmpty(ipAddress)){
-            ipAddress = servletRequest.getRemoteAddr();
-            if(ipAddress.equals(LOCALHOST_IPV4) || ipAddress.equals(LOCALHOST_IPV6)){
-                try{
-                    InetAddress localHost = InetAddress.getLocalHost();
-                    ipAddress = localHost.getHostAddress();
-                }catch (UnknownHostException e){
-                    e.printStackTrace();
-                }
-            }
-        }
-        return ipAddress;
     }
 }
