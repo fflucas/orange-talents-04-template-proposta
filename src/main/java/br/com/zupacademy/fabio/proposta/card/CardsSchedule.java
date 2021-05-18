@@ -24,7 +24,7 @@ public class CardsSchedule {
         this.transactionExecutor = transactionExecutor;
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 60000)
     public void checkForCards(){
         List<Long> id_propostas = transactionExecutor.findPropostaElegivelSemNumeroCartao();
         if(id_propostas.size()>0){
