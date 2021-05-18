@@ -1,10 +1,12 @@
 package br.com.zupacademy.fabio.proposta.client;
 
-import br.com.zupacademy.fabio.proposta.card.RequestApi;
 import br.com.zupacademy.fabio.proposta.card.AnaliseApi;
+import br.com.zupacademy.fabio.proposta.card.RequestApi;
 import br.com.zupacademy.fabio.proposta.shared.TransactionExecutor;
 import br.com.zupacademy.fabio.proposta.shared.config.error.ApiErrorException;
 import feign.FeignException;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +27,14 @@ public class ControllerProposta {
     private RepositoryProposta repositoryProposta;
     private AnaliseApi analiseApi;
     private final Logger logger = LoggerFactory.getLogger(ControllerProposta.class);
+    private Tracer tracer;
 
     @Autowired
-    public ControllerProposta(TransactionExecutor transactionExecutor, RepositoryProposta repositoryProposta, AnaliseApi analiseApi) {
+    public ControllerProposta(TransactionExecutor transactionExecutor, RepositoryProposta repositoryProposta, AnaliseApi analiseApi, Tracer tracer) {
         this.transactionExecutor = transactionExecutor;
         this.repositoryProposta = repositoryProposta;
         this.analiseApi = analiseApi;
+        this.tracer = tracer;
     }
 
     @PostMapping("/")
@@ -43,6 +47,10 @@ public class ControllerProposta {
                 proposta.getName(),
                 proposta.getId().toString()
         );
+
+        Span span = tracer.activeSpan();
+        span.setTag("document", requestApi.getDocumento());
+
         try{
             ResponseEntity<Object> objectResponseEntity = analiseApi.requestAnalysisForCard(requestApi);
             proposta.setStatus(
