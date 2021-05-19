@@ -38,7 +38,7 @@ public class ControllerProposta {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody @Valid RequestProposta requestProposta, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<?> create(@RequestBody @Valid RequestProposta requestProposta, UriComponentsBuilder uriBuilder) {
         Proposta proposta = requestProposta.convertToProposta();
         transactionExecutor.commitAndSave(proposta);
 
@@ -75,7 +75,7 @@ public class ControllerProposta {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> show(@PathVariable Long id){
+    public ResponseEntity<Object> show(@PathVariable Long id) {
         Optional<Proposta> proposta = repositoryProposta.findById(id);
         if(proposta.isEmpty()){
             return ResponseEntity.notFound().build();

@@ -1,6 +1,7 @@
 package br.com.zupacademy.fabio.proposta.client;
 
 import br.com.zupacademy.fabio.proposta.card.Card;
+import br.com.zupacademy.fabio.proposta.shared.MyCustomCrypto;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ public class Proposta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Convert(converter = MyCustomCrypto.class)
     private String document;
     private String email;
     private String name;

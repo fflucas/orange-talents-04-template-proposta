@@ -48,7 +48,7 @@ public class RequestProposta {
         this.salary = salary;
     }
 
-    public Proposta convertToProposta(){
+    public Proposta convertToProposta() {
         return new Proposta(document, email, name, address, salary);
     }
 }
