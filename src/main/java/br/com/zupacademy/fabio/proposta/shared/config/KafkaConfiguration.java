@@ -1,6 +1,6 @@
 package br.com.zupacademy.fabio.proposta.shared.config;
 
-import br.com.zupacademy.fabio.proposta.card.transaction.EventTransaction;
+import br.com.zupacademy.fabio.proposta.card.transaction.ResponseEventTransaction;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,16 +37,16 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public ConsumerFactory<String, EventTransaction> transactionConsumerFactory() {
+    public ConsumerFactory<String, ResponseEventTransaction> transactionConsumerFactory() {
         StringDeserializer keyStringDeserializer = new StringDeserializer();
-        JsonDeserializer<EventTransaction> valueJsonDeserializer = new JsonDeserializer<>(EventTransaction.class, false);
+        JsonDeserializer<ResponseEventTransaction> valueJsonDeserializer = new JsonDeserializer<>(ResponseEventTransaction.class, false);
 
         return new DefaultKafkaConsumerFactory<>(consumerConfigurations(), keyStringDeserializer, valueJsonDeserializer);
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, EventTransaction> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, EventTransaction> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, ResponseEventTransaction> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, ResponseEventTransaction> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(transactionConsumerFactory());
 
         return factory;
