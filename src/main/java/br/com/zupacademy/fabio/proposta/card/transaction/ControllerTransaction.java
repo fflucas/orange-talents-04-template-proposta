@@ -9,26 +9,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping(value = "/v1/cards/{id_card}/transactions")
 public class ControllerTransaction {
 
-    private TransactionExecutor transactionExecutor;
-    private TransactionApi transactionApi;
-    private ListenerTransaction listenerTransaction;
+    private final TransactionExecutor transactionExecutor;
+    private final TransactionApi transactionApi;
+    private final RepositoryTransaction repositoryTransaction;
 
     @Autowired
-    public ControllerTransaction(TransactionExecutor transactionExecutor, TransactionApi transactionApi, ListenerTransaction listenerTransaction) {
+    public ControllerTransaction(TransactionExecutor transactionExecutor, TransactionApi transactionApi, RepositoryTransaction repositoryTransaction) {
         this.transactionExecutor = transactionExecutor;
         this.transactionApi = transactionApi;
-        this.listenerTransaction = listenerTransaction;
+        this.repositoryTransaction = repositoryTransaction;
     }
 
-    @PostMapping(value = "/v1/cards/{id_card}/transactions")
+    @PostMapping
     public ResponseEntity<Object> create(
             @PathVariable Long id_card,
             @AuthenticationPrincipal Jwt jwt
@@ -49,12 +49,10 @@ public class ControllerTransaction {
             throw new ApiErrorException(HttpStatus.BAD_REQUEST, "Algo saiu errado com o servidor de transações");
         }
 
-        listenerTransaction.listener(new EventTransaction());
-
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value = "/v1/cards/{id_card}/transactions")
+    @DeleteMapping
     public ResponseEntity<Object> stop(@PathVariable Long id_card){
         Card card = transactionExecutor.find(Card.class, id_card);
         if(card == null){
@@ -70,4 +68,16 @@ public class ControllerTransaction {
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping
+    public ResponseEntity<Object> listTen(@PathVariable Long id_card){
+        Card card = transactionExecutor.find(Card.class, id_card);
+        if(card == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        List<Transaction> lastTransactions = repositoryTransaction.findTenByCardNumberOrderByMadeInDesc(card.getNumber());
+        return ResponseEntity.ok(lastTransactions);
+    }
+
 }
