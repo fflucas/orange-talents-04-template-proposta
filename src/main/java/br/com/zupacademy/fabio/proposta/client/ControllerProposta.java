@@ -1,9 +1,7 @@
 package br.com.zupacademy.fabio.proposta.client;
 
-import br.com.zupacademy.fabio.proposta.card.AnaliseApi;
-import br.com.zupacademy.fabio.proposta.card.RequestApi;
-import br.com.zupacademy.fabio.proposta.shared.TransactionExecutor;
-import br.com.zupacademy.fabio.proposta.shared.config.error.ApiErrorException;
+import br.com.zupacademy.fabio.proposta.utils.TransactionExecutor;
+import br.com.zupacademy.fabio.proposta.shared.error.ApiErrorException;
 import feign.FeignException;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
@@ -42,17 +40,17 @@ public class ControllerProposta {
         Proposta proposta = requestProposta.convertToProposta();
         transactionExecutor.commitAndSave(proposta);
 
-        RequestApi requestApi = new RequestApi(
+        RequestAnaliseApi requestAnaliseApi = new RequestAnaliseApi(
                 proposta.getDocument(),
                 proposta.getName(),
                 proposta.getId().toString()
         );
 
         Span span = tracer.activeSpan();
-        span.setTag("document", requestApi.getDocumento());
+        span.setTag("document", requestAnaliseApi.getDocumento());
 
         try{
-            ResponseEntity<Object> objectResponseEntity = analiseApi.requestAnalysisForCard(requestApi);
+            ResponseEntity<Object> objectResponseEntity = analiseApi.requestAnalysisForCard(requestAnaliseApi);
             proposta.setStatus(
                     (objectResponseEntity.getStatusCode() == HttpStatus.CREATED) ? PropostaStatus.ELEGIVEL : PropostaStatus.NAO_ELEGIVEL
             );

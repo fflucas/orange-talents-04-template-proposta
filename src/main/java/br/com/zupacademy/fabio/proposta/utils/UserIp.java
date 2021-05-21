@@ -1,4 +1,4 @@
-package br.com.zupacademy.fabio.proposta.shared;
+package br.com.zupacademy.fabio.proposta.utils;
 
 import org.springframework.util.StringUtils;
 

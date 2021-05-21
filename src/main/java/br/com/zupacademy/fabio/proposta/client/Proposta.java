@@ -1,7 +1,7 @@
 package br.com.zupacademy.fabio.proposta.client;
 
 import br.com.zupacademy.fabio.proposta.card.Card;
-import br.com.zupacademy.fabio.proposta.shared.MyCustomCrypto;
+import br.com.zupacademy.fabio.proposta.utils.MyCustomCrypto;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

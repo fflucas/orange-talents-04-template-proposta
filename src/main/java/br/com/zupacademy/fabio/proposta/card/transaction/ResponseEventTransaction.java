@@ -2,7 +2,7 @@ package br.com.zupacademy.fabio.proposta.card.transaction;
 
 import br.com.zupacademy.fabio.proposta.card.Card;
 import br.com.zupacademy.fabio.proposta.card.RepositoryCard;
-import br.com.zupacademy.fabio.proposta.shared.config.error.ApiErrorException;
+import br.com.zupacademy.fabio.proposta.shared.error.ApiErrorException;
 import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;

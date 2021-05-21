@@ -1,4 +1,4 @@
-package br.com.zupacademy.fabio.proposta.shared.config.error;
+package br.com.zupacademy.fabio.proposta.shared.error;
 
 import org.springframework.http.HttpStatus;
 

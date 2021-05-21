@@ -1,4 +1,4 @@
-package br.com.zupacademy.fabio.proposta.card.travel;
+package br.com.zupacademy.fabio.proposta.card.travelNotice;
 
 import br.com.zupacademy.fabio.proposta.card.Card;
 import org.hibernate.annotations.CreationTimestamp;

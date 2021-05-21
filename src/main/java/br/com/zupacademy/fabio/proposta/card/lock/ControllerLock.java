@@ -3,9 +3,9 @@ package br.com.zupacademy.fabio.proposta.card.lock;
 import br.com.zupacademy.fabio.proposta.card.Card;
 import br.com.zupacademy.fabio.proposta.card.CardApi;
 import br.com.zupacademy.fabio.proposta.card.ResponseCard;
-import br.com.zupacademy.fabio.proposta.shared.TransactionExecutor;
-import br.com.zupacademy.fabio.proposta.shared.UserIp;
-import br.com.zupacademy.fabio.proposta.shared.config.error.ApiErrorException;
+import br.com.zupacademy.fabio.proposta.utils.TransactionExecutor;
+import br.com.zupacademy.fabio.proposta.utils.UserIp;
+import br.com.zupacademy.fabio.proposta.shared.error.ApiErrorException;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +72,7 @@ public class ControllerLock {
 
         // solicita bloqueio na api externa
         try {
-            ResponseEntity<?> responseToLockCard = cardApi.lockCard(card.getNumber(), new CardApi.RequestLockCard());
+            ResponseEntity<?> responseToLockCard = cardApi.lockCard(card.getNumber(), new RequestLockCard());
             if (responseToLockCard.getStatusCode().equals(HttpStatus.OK)){
                 LockCard lockCard = new LockCard(userIp, userAgent, card);
                 transactionExecutor.commitAndSave(lockCard);

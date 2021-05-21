@@ -1,6 +1,6 @@
 package br.com.zupacademy.fabio.proposta.auth;
 
-import br.com.zupacademy.fabio.proposta.shared.config.error.ApiErrorException;
+import br.com.zupacademy.fabio.proposta.shared.error.ApiErrorException;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +30,7 @@ public class ControllerLogin {
         try{
             tokenResponse = loginKeycloak.requestToken(multiValueMap);
         }catch (FeignException fe){
+            fe.printStackTrace();
             throw new ApiErrorException(HttpStatus.UNAUTHORIZED, "Bad credentials");
         }
         return ResponseEntity.ok(tokenResponse);

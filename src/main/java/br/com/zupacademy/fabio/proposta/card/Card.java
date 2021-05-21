@@ -2,7 +2,7 @@ package br.com.zupacademy.fabio.proposta.card;
 
 import br.com.zupacademy.fabio.proposta.biometry.Biometry;
 import br.com.zupacademy.fabio.proposta.card.lock.LockCard;
-import br.com.zupacademy.fabio.proposta.card.travel.TravelNotice;
+import br.com.zupacademy.fabio.proposta.card.travelNotice.TravelNotice;
 import br.com.zupacademy.fabio.proposta.card.wallet.Wallet;
 
 import javax.persistence.*;

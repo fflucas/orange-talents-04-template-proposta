@@ -1,4 +1,4 @@
-package br.com.zupacademy.fabio.proposta.shared;
+package br.com.zupacademy.fabio.proposta.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import java.util.List;
 public class TransactionExecutor {
 
     @PersistenceContext
-    private EntityManager manager;
+    private final EntityManager manager;
     @Autowired
     public TransactionExecutor(EntityManager manager) {
         this.manager = manager;

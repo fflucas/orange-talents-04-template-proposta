@@ -1,7 +1,7 @@
 package br.com.zupacademy.fabio.proposta.card;
 
 import br.com.zupacademy.fabio.proposta.client.Proposta;
-import br.com.zupacademy.fabio.proposta.shared.TransactionExecutor;
+import br.com.zupacademy.fabio.proposta.utils.TransactionExecutor;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

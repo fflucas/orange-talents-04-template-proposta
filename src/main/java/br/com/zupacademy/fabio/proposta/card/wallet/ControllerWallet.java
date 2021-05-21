@@ -4,8 +4,8 @@ import br.com.zupacademy.fabio.proposta.card.Card;
 import br.com.zupacademy.fabio.proposta.card.CardApi;
 import br.com.zupacademy.fabio.proposta.client.Proposta;
 import br.com.zupacademy.fabio.proposta.client.RepositoryProposta;
-import br.com.zupacademy.fabio.proposta.shared.TransactionExecutor;
-import br.com.zupacademy.fabio.proposta.shared.config.error.ApiErrorException;
+import br.com.zupacademy.fabio.proposta.utils.TransactionExecutor;
+import br.com.zupacademy.fabio.proposta.shared.error.ApiErrorException;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,7 +51,7 @@ public class ControllerWallet {
 
 
         Proposta proposta = repositoryProposta.findByCardId(id_card);
-        CardApi.RequestAssociateWallet requestAssociateWallet = new CardApi.RequestAssociateWallet(
+        RequestAssociateWallet requestAssociateWallet = new RequestAssociateWallet(
                 proposta.getEmail(),
                 nomeCarteira
         );

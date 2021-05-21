@@ -1,4 +1,4 @@
-package br.com.zupacademy.fabio.proposta.card;
+package br.com.zupacademy.fabio.proposta.client;
 
 import feign.FeignException;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(name = "analise", url = "${analise.hostname}")
 public interface AnaliseApi {
     @RequestMapping(method = RequestMethod.POST, value = "${analise.request}")
-    ResponseEntity<Object> requestAnalysisForCard(RequestApi financialAnalysis) throws FeignException;
+    ResponseEntity<Object> requestAnalysisForCard(RequestAnaliseApi financialAnalysis) throws FeignException;
 }

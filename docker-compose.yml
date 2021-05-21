@@ -145,23 +145,33 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: proposta
-#
-#  proposta:
-#    build:
-#      dockerfile: ./docker/dockerfile.proposta
-#      context: .
-#      args:
-#        - DATABASE_HOST=jdbc:mysql://mysql:3306/proposta?createDatabaseIfNotExist=true
-#        - ANALISE_HOST=analise
-#        - CONTAS_HOST=contas
-#    image: proposta
-#    container_name: proposta
-#    restart: on-failure
-#    ports:
-#      - 8080:8080
-#    depends_on:
-#      - mysql
-#      - keycloak
+
+  proposta:
+    depends_on:
+      - mysql
+      - keycloak
+      - kafka
+    build:
+      dockerfile: ./docker/dockerfile.proposta
+      context: .
+      args:
+        - DATABASE_HOST=mysql:3306
+    environment:
+      - DATABASE_HOST=mysql:3306
+      - ANALISE_HOST=analise:9999
+      - CARDS_HOST=contas:8888
+      - TRANSACTION_HOST=transacoes:7777
+      - KEYCLOAK_HOST=keycloak:8080
+      - JAEGER_HOST=jaeger:14268
+      - PASSWORD=${PASSWORD}
+      - SALT=${SALT}
+      - KAFKAHOST=kafka:29092
+    image: proposta
+    container_name: proposta
+    restart: on-failure
+    ports:
+      - 8080:8080
+
 volumes:
   grafana-volume:
   prometheus-volume:

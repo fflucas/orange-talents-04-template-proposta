@@ -2,7 +2,7 @@ package br.com.zupacademy.fabio.proposta.shared.validator;
 
 import br.com.zupacademy.fabio.proposta.client.Proposta;
 import br.com.zupacademy.fabio.proposta.client.RepositoryProposta;
-import br.com.zupacademy.fabio.proposta.shared.config.error.ApiErrorException;
+import br.com.zupacademy.fabio.proposta.shared.error.ApiErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 

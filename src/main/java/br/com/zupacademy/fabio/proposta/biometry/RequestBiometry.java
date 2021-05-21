@@ -1,8 +1,6 @@
 package br.com.zupacademy.fabio.proposta.biometry;
 
 import br.com.zupacademy.fabio.proposta.card.Card;
-import br.com.zupacademy.fabio.proposta.shared.config.error.ApiErrorException;
-import org.springframework.http.HttpStatus;
 
 import javax.validation.constraints.NotBlank;
 import java.nio.charset.StandardCharsets;

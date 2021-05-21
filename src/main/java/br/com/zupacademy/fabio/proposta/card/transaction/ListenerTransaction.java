@@ -1,7 +1,7 @@
 package br.com.zupacademy.fabio.proposta.card.transaction;
 
 import br.com.zupacademy.fabio.proposta.card.RepositoryCard;
-import br.com.zupacademy.fabio.proposta.shared.TransactionExecutor;
+import br.com.zupacademy.fabio.proposta.utils.TransactionExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
